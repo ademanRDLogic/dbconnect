@@ -1,6 +1,7 @@
 package com.rdlogic.dbconnect;
 
 import com.rdlogic.dbconnect.dao.AccessorJpaDao;
+import com.rdlogic.dbconnect.dao.JDBCTestDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,18 +24,20 @@ public class DbconnectApplication {
     }
 
     @Bean
-    public CommandLineRunner propTest(@Qualifier("rdlDatasource") DataSource rdlClientDatasource, ApplicationContext ctx, AccessorJpaDao dao) {
+    public CommandLineRunner propTest(@Qualifier("rdlDatasource") DataSource rdlClientDatasource, ApplicationContext ctx, AccessorJpaDao dao, JDBCTestDAO jdbcTest) {
         return (args) -> {
             Connection c = null;
             try {
                 c = rdlClientDatasource.getConnection();
-                System.out.println("successfull connection");
+                System.out.println("successful connection");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 c.close();
             }
             System.out.println(dao.getById("SUP").toString());
+            System.out.println("jdbc test");
+            System.out.println(jdbcTest.getSUPemail());
         };
     }
 }
